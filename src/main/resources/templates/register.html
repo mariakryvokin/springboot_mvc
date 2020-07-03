@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+</head>
+<body>
+<form action="/register" method="post" th:object="${user}">
+    Email:<br>
+    <input type="email" th:field="*{email}"/>
+    <p th:text="${error}"></p>
+    Password:<br>
+    <input type="password" th:field="*{password}"/>
+    <br><br>
+    <ul>
+        <li th:each="role: ${allRoles}">
+            <input type="checkbox"
+                   th:field="*{roles}"
+                   th:value="${role.name}"/>
+            <label
+                th:text="${role.name}"></label>
+        </li>
+    </ul>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
