@@ -4,14 +4,13 @@
 <head>
 </head>
 <body>
-<div th:if="${error != null}">
-    Invalid username or password.
+<div th:if="${error != null}"  th:text="#{message.invalid.login.waring}">
 </div>
 <form th:action="@{/login}" method="post">
-    <div><label> User email : <input type="email" name="email"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="checkbox" name="remember-me"></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><label th:text="#{message.user.email}"/><input type="email" name="email"/></div>
+    <div><label th:text="#{message.user.password}"/><input type="password" name="password"/></div>
+    <div><input type="checkbox" name="remember-me" th:text="#{message.remember.me}"></div>
+    <div> <button type="submit" th:text="#{message.sign.in}"/></div>
 </form>
 </body>
 </html>

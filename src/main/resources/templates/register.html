@@ -4,10 +4,12 @@
 </head>
 <body>
 <form action="/register" method="post" th:object="${user}">
-    Email:<br>
+    <label th:text="#{message.user.email}"/>
+    <br>
     <input type="email" th:field="*{email}"/>
-    <p th:text="${error}"></p>
-    Password:<br>
+    <div th:if="${error != null}"  th:text="${error}"/>
+    <br>
+    <label th:text="#{message.user.password}"/><br>
     <input type="password" th:field="*{password}"/>
     <br><br>
     <ul>
@@ -20,7 +22,7 @@
         </li>
     </ul>
     <br><br>
-    <input type="submit" value="Submit">
+    <button type="submit" th:text="#{message.submit}"/>
 </form>
 </body>
 </html>
