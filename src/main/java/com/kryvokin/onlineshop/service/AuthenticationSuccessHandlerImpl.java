@@ -3,9 +3,11 @@ package com.kryvokin.onlineshop.service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,6 +23,9 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
         Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
+        Cookie cookie = new Cookie("userEmail", ((UserDetails) authentication.getPrincipal()).getUsername());
+        cookie.setHttpOnly(true);
+        httpServletResponse.addCookie(cookie);
         if (roles.contains(new SimpleGrantedAuthority(adminRole))) {
             httpServletResponse.sendRedirect("/admin/main");
         } else if (roles.contains(new SimpleGrantedAuthority(userRole))) {

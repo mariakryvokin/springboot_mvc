@@ -14,6 +14,7 @@ public class User {
     @Email
     private String email;
     private String password;
+    @Lob
     private byte[] photo;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_has_roles", joinColumns = {

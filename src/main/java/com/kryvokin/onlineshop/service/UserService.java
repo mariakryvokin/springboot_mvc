@@ -24,4 +24,5 @@ public class UserService {
     public boolean existsWithSameEmail(String email){
         return userRepository.getUserByEmail(email) != null;
     }
+
 }

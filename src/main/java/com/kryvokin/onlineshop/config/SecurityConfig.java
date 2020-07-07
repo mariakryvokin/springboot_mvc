@@ -53,8 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login-error")
                 .and()
                 .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").permitAll().logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID","userEmail")
                 .and()
                 .rememberMe().rememberMeParameter("remember-me").userDetailsService(userDetailsService).key("unique")
-                .and().sessionManagement().maximumSessions(2).expiredUrl("/");
+                .and().sessionManagement().maximumSessions(1).expiredUrl("/");
     }
 }
