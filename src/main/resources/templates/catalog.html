@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <th th:text="#{message.name}"/>
+        <th th:text="#{message.price}"/>
+        <th th:text="#{message.add}"/>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product, iStat : ${productsPage.content}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td th:text="${product.name}"/>
+        <td th:text="${product.price}"/>
+        <td>
+            <a th:href="@{/add/product/{id}(id=${product.id})}"
+               th:text=#{message.add}></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${productsPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/catalog(size=${productsPage.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==productsPage.number + 1} ? active"></a>
+</div>
+</body>
+</html>

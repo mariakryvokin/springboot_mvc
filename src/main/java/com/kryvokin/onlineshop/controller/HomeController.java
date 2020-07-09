@@ -15,7 +15,7 @@ public class HomeController {
         this.userService = userService;
     }
 
-    @GetMapping("/main")
+    @GetMapping(value = {"/", "/main"})
     public String doHome(Model model){
         model.addAttribute("local", Local.values());
         return "main";
