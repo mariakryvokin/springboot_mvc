@@ -1,6 +1,4 @@
-package com.kryvokin.onlineshop.model.propertyeditor;
-
-import com.kryvokin.onlineshop.model.Role;
+package com.kryvokin.onlineshop.model;
 
 import java.beans.PropertyEditorSupport;
 
