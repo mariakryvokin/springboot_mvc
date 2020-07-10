@@ -20,8 +20,10 @@
         <td th:text="${product.name}"/>
         <td th:text="${product.price}"/>
         <td>
+            <span th:if="${product.totalAmount-product.soldAmount > 0}">
             <a th:href="@{/add/product/{id}(id=${product.id})}"
                th:text=#{message.add}></a>
+            </span>
         </td>
     </tr>
     </tbody>

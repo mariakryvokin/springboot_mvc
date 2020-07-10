@@ -2,6 +2,7 @@ package com.kryvokin.onlineshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +22,8 @@ public class User {
             @JoinColumn(name = "users_id")}, inverseJoinColumns = {
             @JoinColumn(name = "roles_name")})
     private Set<Role> roles;
+    @OneToMany(mappedBy = "user")
+    private List<Order> order;
 
     public int getId() {
         return id;
@@ -60,5 +63,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
     }
 }

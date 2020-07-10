@@ -18,7 +18,7 @@
 
 <a th:href="@{/catalog}" th:text="#{message.back}"/>
 
-<form action="#" th:action="@{/order}" method="post" th:object="${cart}">
+<form action="#" th:action="@{/order}" method="post">
 <button type="submit" th:text="#{message.create.order}"/>
 </form>
 
