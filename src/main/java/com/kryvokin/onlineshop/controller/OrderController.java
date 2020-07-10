@@ -4,6 +4,7 @@ import com.kryvokin.onlineshop.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class OrderController {
@@ -15,9 +16,9 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String createOrder(@CookieValue(value = "userEmail") String userEmail){
+    public RedirectView createOrder(@CookieValue(value = "userEmail", required = false) String userEmail) {
         orderService.createOrder(userEmail);
-        return "main";
+        return new RedirectView("/main");
     }
 
 }
