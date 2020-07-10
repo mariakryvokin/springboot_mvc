@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<table>
+    <tr>
+        <th th:text="#{message.name}"/>
+        <th th:text="#{message.price}"/>
+        <th th:text="#{message.amount}"/>
+    </tr>
+    <tr th:each="element : ${cart}">
+        <table>
+            <td th:text="${element.key.name}">keyvalue</td>
+            <td th:text="${element.key.price}">keyvalue</td>
+            <td th:text="${element.value}">value</td>
+        </table>
+    </tr>
+</table>
+
+<a th:href="@{/catalog}" th:text="#{message.back}"/>
+
+<form action="#" th:action="@{/order}" method="post" th:object="${cart}">
+<button type="submit" th:text="#{message.create.order}"/>
+</form>
+
+</body>
+</html>

@@ -1,23 +1,30 @@
 package com.kryvokin.onlineshop.service;
 
 import com.kryvokin.onlineshop.model.Product;
-import com.kryvokin.onlineshop.repository.ProductCatalogRepository;
+import com.kryvokin.onlineshop.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class ProductCatalogService {
+public class ProductService {
 
-    private ProductCatalogRepository productCatalogRepository;
+    private ProductRepository productRepository;
 
-    public ProductCatalogService(ProductCatalogRepository productCatalogRepository) {
-        this.productCatalogRepository = productCatalogRepository;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public Page<Product> findAll(int pageSize, int currentPage){
         Pageable page = PageRequest.of(currentPage, pageSize);
-        return productCatalogRepository.findAll(page);
+        return productRepository.findAll(page);
     }
+
+    public Optional<Product> findById(int id){
+        return productRepository.findById(id);
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.kryvokin.onlineshop.controller;
 
 import com.kryvokin.onlineshop.model.Product;
-import com.kryvokin.onlineshop.service.ProductCatalogService;
+import com.kryvokin.onlineshop.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,16 +16,16 @@ import java.util.stream.IntStream;
 @Controller
 public class ProductCatalogController {
 
-    private ProductCatalogService productCatalogService;
+    private ProductService productService;
 
-    public ProductCatalogController(ProductCatalogService productCatalogService) {
-        this.productCatalogService = productCatalogService;
+    public ProductCatalogController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/catalog")
     public String listBooks(Model model, @RequestParam(value = "page", defaultValue = "1") int currentPage,
                             @RequestParam(value = "size", defaultValue = "1") int size) {
-        Page<Product> productsPage = productCatalogService.findAll(size, currentPage - 1);
+        Page<Product> productsPage = productService.findAll(size, currentPage - 1);
         model.addAttribute("productsPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         List<Integer> pageNumbers = new ArrayList<>();
