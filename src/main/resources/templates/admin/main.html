@@ -1,8 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<a href="/logout">Logout</a>
+<a href="/logout" th:text="#{message.logout}"/>
 <body>
-<H1>MAIN</H1>
-<a href="@{/user/{id}/update(id = ${id})}">Personal settings</a>
+<H1 th:test="#{message.user.greeting}"></H1>
+<img th:src="@{/user/photo}" width="637" height="613" />
+<br>
+<a th:href="@{/user/download/photo}" th:text="#{message.download.photo}"/>
+<br>
+<a th:href="@{/catalog}" th:text="#{message.catalog}"/>
 </body>
 </html>

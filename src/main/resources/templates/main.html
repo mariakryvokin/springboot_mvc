@@ -1,6 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <html lang="en">
+<a href="/logout" th:text="#{message.logout}"/>
+<br>
 <head>
 </head>
 <body>
@@ -14,5 +16,7 @@
 <a th:href="@{/login}" th:text="#{message.sign.in}"/>
 <br>
 <a th:href="@{/register}" th:text="#{message.register}"/>
+<br>
+<a th:href="@{/catalog}" th:text="#{message.catalog}"/>
 </body>
 </html>

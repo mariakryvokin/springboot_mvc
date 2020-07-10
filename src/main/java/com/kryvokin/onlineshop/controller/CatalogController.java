@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-public class ProductCatalogController {
+public class CatalogController {
 
     private ProductService productService;
 
-    public ProductCatalogController(ProductService productService) {
+    public CatalogController(ProductService productService) {
         this.productService = productService;
     }
 
