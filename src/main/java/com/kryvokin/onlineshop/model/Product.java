@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Entity
 @Table(name = "item")
@@ -24,6 +26,7 @@ public class Product {
     private int soldAmount;
     @OneToMany(mappedBy = "item")
     private List<OrderHasItem> orders;
+    private Lock lock = new ReentrantLock(true);
 
     public int getId() {
         return id;
@@ -71,5 +74,9 @@ public class Product {
 
     public void setOrders(List<OrderHasItem> orders) {
         this.orders = orders;
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }

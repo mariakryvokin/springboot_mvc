@@ -1,5 +1,6 @@
 package com.kryvokin.onlineshop.controller;
 
+import com.kryvokin.onlineshop.model.error.ProductSoldAmountExceededTotalAmount;
 import com.kryvokin.onlineshop.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -16,7 +17,8 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public RedirectView createOrder(@CookieValue(value = "userEmail", required = false) String userEmail) {
+    public RedirectView createOrder(@CookieValue(value = "userEmail", required = false) String userEmail)
+            throws ProductSoldAmountExceededTotalAmount {
         orderService.createOrder(userEmail);
         return new RedirectView("/main");
     }
