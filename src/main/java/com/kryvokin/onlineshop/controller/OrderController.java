@@ -20,6 +20,9 @@ public class OrderController {
     public RedirectView createOrder(@CookieValue(value = "userEmail", required = false) String userEmail)
             throws ProductSoldAmountExceededTotalAmount {
         orderService.createOrder(userEmail);
+        if(userEmail != null){
+            return new RedirectView("/user/main");
+        }
         return new RedirectView("/main");
     }
 

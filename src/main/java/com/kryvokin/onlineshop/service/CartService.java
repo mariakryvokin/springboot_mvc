@@ -22,4 +22,8 @@ public class CartService {
         return cart;
     }
 
+    public void clearCart() {
+        cart.getCart().clear();
+    }
+
 }

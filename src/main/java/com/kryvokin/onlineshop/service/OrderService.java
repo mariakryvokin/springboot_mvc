@@ -10,6 +10,7 @@ import com.kryvokin.onlineshop.model.error.ProductSoldAmountExceededTotalAmount;
 import com.kryvokin.onlineshop.repository.OrderRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,31 +35,26 @@ public class OrderService {
         this.orderHasItemService = orderHasItemService;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Order createOrder(@Nullable String userEmail) throws ProductSoldAmountExceededTotalAmount {
-        try {
-            lockOrderItems();
-            List<Product> unavailableProducts = getUnavailableProducts();
-            if (unavailableProducts.size() == 0) {
-                User user = userService.getUserByEmail(userEmail);
-                Order order = Order.builder().user(user).status(OrderStatus.NEW).price(calculateOrderPrice()).build();
-                orderRepository.save(order);
-                List<OrderHasItem> orderHasItem = createOrderHasItem(order);
-                orderHasItemService.saveAll(orderHasItem);
-                updateItemSoldAmount();
-                return order;
-            } else {
-                throw new ProductSoldAmountExceededTotalAmount("Unavailable products: " + unavailableProducts.stream()
-                        .map(Product::getName)
-                        .collect(Collectors.joining(","))
-                );
-            }
-        } finally {
-            unlockOrderItems();
+        List<Product> unavailableProducts = getUnavailableProducts();
+        if (unavailableProducts.size() == 0) {
+            User user = userService.getUserByEmail(userEmail);
+            Order order = Order.builder().user(user).status(OrderStatus.NEW).price(calculateOrderPrice()).build();
+            orderRepository.save(order);
+            List<OrderHasItem> orderHasItem = createOrderHasItem(order);
+            orderHasItemService.saveAll(orderHasItem);
+            updateItemSoldAmount();
+            cartService.clearCart();
+            return order;
+        } else {
+            throw new ProductSoldAmountExceededTotalAmount("Unavailable products: " + unavailableProducts.stream()
+                    .map(Product::getName)
+                    .collect(Collectors.joining(","))
+            );
         }
     }
 
-    @Transactional
     private List<Product> getUnavailableProducts() {
         return cartService.getCart().getCart().entrySet().stream()
                 .filter(productVsAmountEntry -> {
@@ -69,22 +65,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    private void unlockOrderItems() {
-        cartService.getCart().getCart().forEach((product, integer) -> {
-            product.getLock().unlock();
-        });
-
-    }
-
-    @Transactional
-    private void lockOrderItems() {
-        cartService.getCart().getCart().forEach((product, integer) -> {
-            product.getLock().lock();
-        });
-    }
-
-    @Transactional
     private void updateItemSoldAmount() {
         cartService.getCart().getCart().entrySet().stream().forEach(productIntegerEntry -> {
             Product product = productIntegerEntry.getKey();
@@ -93,7 +73,6 @@ public class OrderService {
         });
     }
 
-    @Transactional
     private List<OrderHasItem> createOrderHasItem(Order order) {
         return cartService.getCart().getCart().entrySet().stream().map(productIntegerEntry -> {
             return OrderHasItem.builder()
