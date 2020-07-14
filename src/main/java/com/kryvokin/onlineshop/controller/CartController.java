@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -24,8 +25,8 @@ public class CartController {
     }
 
     @GetMapping("/add/product/{id}")
-    public RedirectView addProductToCard(@PathVariable("id") int productId, @RequestParam(value = "amount", defaultValue = "1",
-            required = false) int amount) {
+    public RedirectView addProductToCard(@PathVariable("id") int productId, @RequestParam(value = "amount",
+            defaultValue = "1", required = false) int amount) {
         Optional<Product> product = productService.findById(productId);
         if (product.isPresent()) {
             cartService.addProductToCart(product.get(), amount);
@@ -34,7 +35,8 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String getCartView(Model model){
+    @RequestMapping
+    public String getCartView(Model model) {
         model.addAttribute("cart", cartService.getCart().getCart());
         return "cart";
     }
