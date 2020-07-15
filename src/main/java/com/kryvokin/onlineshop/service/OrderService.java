@@ -10,7 +10,6 @@ import com.kryvokin.onlineshop.model.error.ProductSoldAmountExceededTotalAmount;
 import com.kryvokin.onlineshop.repository.OrderRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class OrderService {
         this.orderHasItemService = orderHasItemService;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Order createOrder(@Nullable String userEmail) throws ProductSoldAmountExceededTotalAmount {
         List<Product> unavailableProducts = getUnavailableProducts();
         if (unavailableProducts.size() == 0) {
@@ -58,8 +57,8 @@ public class OrderService {
     private List<Product> getUnavailableProducts() {
         return cartService.getCart().getCart().entrySet().stream()
                 .filter(productVsAmountEntry -> {
-                    Product product = productVsAmountEntry.getKey();
-                    return (product.getSoldAmount() + productVsAmountEntry.getValue()) >= product.getTotalAmount();
+                    Product product = productService.findByIdWithLock(productVsAmountEntry.getKey().getId());
+                    return (product.getSoldAmount() + productVsAmountEntry.getValue()) > product.getTotalAmount();
                 })
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());

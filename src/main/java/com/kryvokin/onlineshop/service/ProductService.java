@@ -18,16 +18,20 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Page<Product> findAll(int pageSize, int currentPage){
+    public Page<Product> findAll(int pageSize, int currentPage) {
         Pageable page = PageRequest.of(currentPage, pageSize);
         return productRepository.findAll(page);
     }
 
-    public Optional<Product> findById(int id){
+    public Optional<Product> findById(int id) {
         return productRepository.findById(id);
     }
 
-    public Product save(Product product){
+    public Product findByIdWithLock(int id) {
+        return productRepository.findByIdWithLock(id);
+    }
+
+    public Product save(Product product) {
         return productRepository.save(product);
     }
 }

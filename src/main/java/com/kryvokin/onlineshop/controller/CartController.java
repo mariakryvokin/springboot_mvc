@@ -35,7 +35,6 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    @RequestMapping
     public String getCartView(Model model) {
         model.addAttribute("cart", cartService.getCart().getCart());
         return "cart";
