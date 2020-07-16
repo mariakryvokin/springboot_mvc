@@ -21,9 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.kryvokin.onlineshop.model.User user = userService.getUserByEmail(email);
+        com.kryvokin.onlineshop.model.User user = userService.getUserByEmailWithRoles(email);
         if (user != null) {
             List<SimpleGrantedAuthority> authorities = user.getRoles()
                     .stream().map(r->new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
