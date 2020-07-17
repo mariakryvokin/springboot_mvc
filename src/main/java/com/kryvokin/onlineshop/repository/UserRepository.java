@@ -10,7 +10,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     User getUserByEmail(String email);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.roles")
+    @Query("SELECT u FROM User u JOIN FETCH u.roles where u.email = :email")
     User getUserByEmailWithRoles(String email);
 
 }

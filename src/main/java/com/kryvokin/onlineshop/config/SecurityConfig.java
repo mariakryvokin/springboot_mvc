@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .usernameParameter("email")
                 .successHandler(authenticationSuccessHandler)
-                .failureUrl("/login-error")
+                .failureUrl("/login")
                 .and()
                 .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").permitAll().logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
