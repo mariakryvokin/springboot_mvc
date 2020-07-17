@@ -44,7 +44,7 @@ public class UserPhotoController {
     public void displayPhoto(@CookieValue(value = "userEmail") String userEmail,
                              HttpServletResponse httpServletResponse) throws IOException {
         byte[] userPhoto = userService.getUserByEmail(userEmail).getPhoto();
-        if (userPhoto.length > 0) {
+        if (userPhoto != null && userPhoto.length > 0) {
             InputStream photo = new ByteArrayInputStream(userPhoto);
             httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
             IOUtils.copy(photo, httpServletResponse.getOutputStream());
