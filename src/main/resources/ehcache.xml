@@ -1,4 +1,29 @@
-<ehcache>
-    <defaultCache maxEntriesLocalHeap="10000" timeToIdleSeconds="120" timeToLiveSeconds="1200" statistics="true"/>
-    <cache name="com.kryvokin.onlineshop.model.Order" maxElementsInMemory="1000" timeToLiveSeconds="1200" />
-</ehcache>
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+        xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+
+    <service>
+        <jsr107:defaults default-template="tinyCache">
+            <jsr107:cache name="orderCache" template="order"/>
+        </jsr107:defaults>
+    </service>
+
+    <cache-template name="order">
+        <key-type>java.lang.Integer</key-type>
+        <value-type>com.kryvokin.onlineshop.model.Order</value-type>
+        <expiry>
+            <ttl unit="minutes">2</ttl>
+        </expiry>
+        <heap unit="entries">2000</heap>
+    </cache-template>
+
+    <cache-template name="tinyCache">
+        <heap unit="entries">20</heap>
+    </cache-template>
+
+</config>
+
