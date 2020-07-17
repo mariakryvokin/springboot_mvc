@@ -1,5 +1,7 @@
 package com.kryvokin.onlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
@@ -22,6 +24,7 @@ public class User {
             @JoinColumn(name = "users_id")}, inverseJoinColumns = {
             @JoinColumn(name = "roles_name")})
     private Set<Role> roles;
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Order> order;
 

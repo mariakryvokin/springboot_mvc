@@ -1,7 +1,13 @@
 package com.kryvokin.onlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +23,10 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "order")
 public class Order {
 
     @Id
@@ -25,9 +35,11 @@ public class Order {
     private double price;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="users_id", nullable=true)
     private User user;
+    @JsonBackReference
     @OneToMany(mappedBy = "order")
     private List<OrderHasItem> items;
 

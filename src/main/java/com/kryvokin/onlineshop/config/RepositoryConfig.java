@@ -15,17 +15,19 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.SharedCacheMode;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 
 @Configuration
-@EnableJpaRepositories(basePackages="com.kryvokin.onlineshop.repository")
+@EnableJpaRepositories(basePackages = "com.kryvokin.onlineshop.repository")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class RepositoryConfig {
 
     @Bean
-    @ConfigurationProperties(prefix="shop.datasource")
+    @ConfigurationProperties(prefix = "shop.datasource")
     @Primary
     public DataSource getDataSource() {
         return DataSourceBuilder.create().build();
@@ -36,7 +38,9 @@ public class RepositoryConfig {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(jpaVendorAdapter());
         factory.setPackagesToScan("com.kryvokin.onlineshop.model");
+        factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
         factory.setDataSource(getDataSource());
+        factory.setJpaProperties(additionalProperties());
         return factory;
     }
 
@@ -56,4 +60,16 @@ public class RepositoryConfig {
         txManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return txManager;
     }
+
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.cache.use_second_level_cache", "true");
+        properties.setProperty("hibernate.cache.region.factory_class",
+                "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        properties.setProperty("hibernate.current_session_context_class", "thread");
+        properties.setProperty("hibernate.cache.use_query_cache", "true");
+        properties.setProperty("net.sf.ehcache.configurationResourceName", "ehcache.xml");
+        return properties;
+    }
+
 }

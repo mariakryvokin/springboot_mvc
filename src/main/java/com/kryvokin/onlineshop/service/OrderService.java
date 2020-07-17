@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,8 +96,11 @@ public class OrderService {
                 .sum();
     }
 
-    @Transactional
-    public void submitOrder(Order order) {
-        orderRepository.save(order);
+    public Order save(Order order) {
+        return orderRepository.save(order);
+    }
+
+    public Optional<Order> getOrderById(int id){
+        return orderRepository.findById(id);
     }
 }

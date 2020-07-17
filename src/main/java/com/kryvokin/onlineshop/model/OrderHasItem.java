@@ -1,5 +1,6 @@
 package com.kryvokin.onlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kryvokin.onlineshop.model.compositekey.OrderHasItemKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class OrderHasItem {
 
     @EmbeddedId
     private OrderHasItemKey id;
+    @JsonManagedReference
     @ManyToOne
     @MapsId("orders_id")
     @JoinColumn(name = "orders_id")
